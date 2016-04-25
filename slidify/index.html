@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Variable Selection in Kaggle Titanic Dataset</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Variable Selection in Kaggle Titanic Dataset">
+  <meta name="author" content="Roberto Arce">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Variable Selection in Kaggle Titanic Dataset</h1>
+    <h2>Data Products Course Project</h2>
+    <p>Roberto Arce<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <style type='text/css'>
+img {
+    max-height: 380px;
+    max-width: 964px;
+}
+</style>
+
+<!-- Center image on slide -->
+
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+
+<script type='text/javascript'>
+$(function() {
+    $("p:has(img)").addClass('centered');
+});
+</script>
+
+<h2>Variable Selection in Kaggle Titanic Dataset</h2>
+
+<p>This presentation is part of the project for the course in data products of the Data-Science Specialization on Coursera.</p>
+
+<p>The project is a shiny server application who provide the user a easy way to see the data in the titanic dataset, an a simple way to train a classification tree, selecting the desired variables in the dataset.</p>
+
+<p><img src="assets/img/app.png" alt="app"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Kaggle Titanic Dataset</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The dataset is obtained from the Kaggle titanic competition at <a href="https://www.kaggle.com/c/titanic/">https://www.kaggle.com/c/titanic/</a> this consist of two dataset, the <em>train</em> dataset and the <em>test</em>. The last one without the output variable. </p>
+
+<p>The dataset indicate when a passenger of the titanic survived to the accident and a series of characteristic of the passengers.</p>
+
+<p>We realized only a minor preprocessing to the original data, there are many data enginnering procedures suggested in the kaggle site, but for the propurse of this work are not necesary.</p>
+
+<pre><code class="r">train &lt;- read.csv(&quot;data/train.csv&quot;)
+train$Survived &lt;- factor(train$Survived, levels=c(1,0))
+levels(train$Survived) &lt;- c(&quot;Survived&quot;, &quot;Died&quot;)
+train$Pclass &lt;- as.factor(train$Pclass)
+levels(train$Pclass) &lt;- c(&quot;1st Class&quot;, &quot;2nd Class&quot;, &quot;3rd Class&quot;)
+train$Gender &lt;- factor(train$Sex, levels=c(&quot;female&quot;, &quot;male&quot;))
+levels(train$Gender) &lt;- c(&quot;Female&quot;, &quot;Male&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Table Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>One tab of the application show all the data using datatables:</p>
+
+<pre><code class="r">shinyServer(function(input, output) {
+  ...
+  output$table &lt;- DT::renderDataTable({
+    DT::datatable(titanic[, input$show_vars, drop = FALSE])
+  })
+  ...
+</code></pre>
+
+<p><img src="assets/img/table.png" alt="app"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Tree Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The other tab show the tree visualization of the adjusted model</p>
+
+<p><img src="assets/img/tree.png" alt="app"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Conclusions</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Shiny and shinyapps provide a easy way to share data products</li>
+<li>Slidify is a powerful tool to share and present code and models</li>
+<li>We face a problem when we try to produce a more beautiful plot for the model, When we try to use fancyRpartPlot shinyapps don&#39;t allow to use because this require gtk. This is a limitation not faced in the local shiny server.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='NA'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Kaggle Titanic Dataset'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Table Visualization'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Tree Visualization'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Conclusions'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='NA'>
+         6
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
